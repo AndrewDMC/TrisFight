@@ -1,154 +1,145 @@
 import java.util.*;
 
 public class Tris {
-    
-    private int[] a = new int[9];
+
+    private int[] ArrMoves = new int[9];
     private boolean flag = true;
-    private boolean v = true; // vittoria
-    private int c = 0;// contatore caselle
+    private boolean control = true; // vittoria
+    private int MovesCounter = 0;// contatore caselle
     private int value = 0;
 
-    private static String SeqMosse = "";
-    private static String esito = "";
+    private static String SeqMoves = "";
+    private static String result = "";
 
     Database database = new Database();
+    Scanner Input = new Scanner(System.in);
 
     public Tris() {
 
     }
 
-    public void input(int playerID) {
-        Scanner sc = new Scanner(System.in);
-        
+    public void InsertMove(int playerID) {
+
         flag = true;
-        if (playerID == 1) {
+
+        if (playerID == 1){
             System.out.print("Player " + playerID + " inserire la casella: ");
-            
+
             try{
 
-                value = sc.nextInt();
+                value = Input.nextInt();
                 flag = false;
 
             }
 
-            catch(Exception e){
+            catch (Exception e){
 
                 System.out.print("Il valore corrente non è valido, reinserire:");
                 flag = true;
-                sc.nextLine();
+                Input.nextLine();
+
+            }
+        }
+
+        else{
+
+            try{
+
+                value = database.InputAI(SeqMoves);
+                flag = false;
 
             }
 
-            if(value > 0 && value < 10 && a[value - 1] == 0 && flag != true){
+            catch (Exception e){
 
-                a[value - 1] = playerID;
-                SeqMosse = SeqMosse + Integer.toString(value);
-                this.output();
-
-            }
-            
-            else{
-
-                if(flag == false){
-
-                    System.out.println("Questo spazio è occupato, ritentare");
-
-                }
-
-                this.input(playerID);
+                System.out.print("Il valore corrente non è valido, reinserire:");
+                flag = true;
+                Input.nextLine();
 
             }
-                
-                
-                }
 
-        if (playerID == 2) {
+        }
 
-            while (flag) {
-                value = database.InputAI(SeqMosse);
-                if (value <= 0 || value > 9) {
-                    System.out.print("Inserire una casella tra 1 e 9: ");
-                    
-                } else {
-                    
-                    if (a[value - 1] == 0) {
-                        flag = false;
-                        c++;
+        if (value > 0 && value < 10 && ArrMoves[value - 1] == 0 && flag != true){
+            this.InsertoSeq(playerID);
+        }
 
-                    } else {
-                        System.out.print("Casella occupata rinserire: ");
+        else{
+
+            if (flag == false){
+
+                if (playerID == 1)
+                    System.out.print("Questo spazio è occupato, reinserire: ");
+
+                if (playerID == 2) {
+
+                    for (int i = 0; i < 9; i++) {
+
+                        if (ArrMoves[i] == 0) {
+                            value = i + 1;
+                            this.InsertoSeq(playerID);
+                            break;
+                        }
+
                     }
-
                 }
-
-                SeqMosse = SeqMosse + Integer.toString(value);
-                System.out.println(SeqMosse);
-
-                a[value - 1] = playerID;
             }
 
-            /*
-             * System.out.print("Player " + valore_g + " inserire la casella: ");
-             * while (flag) {
-             * value = sc.nextInt();
-             * if (value <= 0 || value > 9) {
-             * System.out.print("Inserire una casella tra 1 e 9: ");
-             * } else {
-             * if (a[value - 1] == 0) {
-             * flag = false;
-             * c++;
-             * 
-             * } else {
-             * System.out.print("Casella occupata rinserire: ");
-             * }
-             * 
-             * }
-             * 
-             * }
-             * seq_mosse = seq_mosse + Integer.toString(value);
-             * System.out.println(seq_mosse);
-             * 
-             * a[value - 1] += valore_g;
-             * 
-             * }
-             */
+            if (playerID == 1){
+                this.InsertMove(playerID);
+            }
+                
+
         }
-        
+
     }
 
-    public boolean controllo() {
-        if (c < 9) {
-            if (a[0] == 1 && a[1] == 1 && a[2] == 1 || a[3] == 1 && a[4] == 1 && a[5] == 1
-                    || a[6] == 1 && a[7] == 1 && a[8] == 1 || a[0] == 1 && a[3] == 1 && a[6] == 1
-                    || a[1] == 1 && a[4] == 1 && a[7] == 1 || a[2] == 1 && a[5] == 1 && a[8] == 1
-                    || a[0] == 1 && a[4] == 1 && a[8] == 1 || a[6] == 1 && a[4] == 1 && a[2] == 1) {
-                v = false;
-                System.out.println("Vittoria player 1");
-                esito = "L";
-            } else {
-                if (a[0] == 2 && a[1] == 2 && a[2] == 2 || a[3] == 2 && a[4] == 2 && a[5] == 2
-                        || a[6] == 2 && a[7] == 2 && a[8] == 2 || a[0] == 2 && a[3] == 2 && a[6] == 2
-                        || a[1] == 2 && a[4] == 2 && a[7] == 2 || a[2] == 2 && a[5] == 2 && a[8] == 2
-                        || a[0] == 2 && a[4] == 2 && a[8] == 2 || a[6] == 2 && a[4] == 2 && a[2] == 2) {
-                    v = false;
-                    System.out.println("Vittoria player 2");
-                    esito = "W";
+    public boolean MainControl(){
+        if (MovesCounter < 9){
+            if (ArrMoves[0] == 1 && ArrMoves[1] == 1 && ArrMoves[2] == 1 || 
+                ArrMoves[3] == 1 && ArrMoves[4] == 1 && ArrMoves[5] == 1 || 
+                ArrMoves[6] == 1 && ArrMoves[7] == 1 && ArrMoves[8] == 1 || 
+                ArrMoves[0] == 1 && ArrMoves[3] == 1 && ArrMoves[6] == 1 || 
+                ArrMoves[1] == 1 && ArrMoves[4] == 1 && ArrMoves[7] == 1 || 
+                ArrMoves[2] == 1 && ArrMoves[5] == 1 && ArrMoves[8] == 1 || 
+                ArrMoves[0] == 1 && ArrMoves[4] == 1 && ArrMoves[8] == 1 || 
+                ArrMoves[6] == 1 && ArrMoves[4] == 1 && ArrMoves[2] == 1) {
+                
+                    control = false;
+                    System.out.println("Vittoria player 1");
+                    result = "L";
+            } 
+            else{
+                if (ArrMoves[0] == 2 && ArrMoves[1] == 2 && ArrMoves[2] == 2 ||
+                    ArrMoves[3] == 2 && ArrMoves[4] == 2 && ArrMoves[5] == 2 || 
+                    ArrMoves[6] == 2 && ArrMoves[7] == 2 && ArrMoves[8] == 2 || 
+                    ArrMoves[0] == 2 && ArrMoves[3] == 2 && ArrMoves[6] == 2 || 
+                    ArrMoves[1] == 2 && ArrMoves[4] == 2 && ArrMoves[7] == 2 || 
+                    ArrMoves[2] == 2 && ArrMoves[5] == 2 && ArrMoves[8] == 2 || 
+                    ArrMoves[0] == 2 && ArrMoves[4] == 2 && ArrMoves[8] == 2 || 
+                    ArrMoves[6] == 2 && ArrMoves[4] == 2 && ArrMoves[2] == 2){
+
+                        control = false;
+                        System.out.println("Vittoria player 2");
+                        result = "W";
+                    }
                 }
-            }
-        } else {
-            v = false;
+        } 
+        else{
+            control = false;
             System.out.print("Pareggio");
-            esito = "D";
+            result = "D";
         }
-        return v;
+        return control;
     }
 
-    public void output() {
-        for (int i = 0; i < 9; i++) {
-            if (a[i] == 1)
+    public void WatchBoard(){
+        for (int i = 0; i < 9; i++){
+            
+            if (ArrMoves[i] == 1)
                 System.out.print("X");
-            else {
-                if (a[i] == 2)
+            else{
+                if (ArrMoves[i] == 2)
                     System.out.print("0");
                 else
                     System.out.print(" ");
@@ -161,15 +152,31 @@ public class Tris {
                 System.out.println("\n- - -");
 
         }
-        System.out.println("\n");
+        System.out.println("");
     }
 
-    public String GetMosse() {
-        return SeqMosse;
+    public String GetMoves() {
+        return SeqMoves;
     }
 
-    public String GetEsito() {
-        return esito;
+    public String GetResult() {
+        return result;
+    }
+
+    public void InsertoSeq(int playerID) {
+
+        ArrMoves[value - 1] = playerID;
+        SeqMoves = SeqMoves + Integer.toString(value);
+        System.out.println(SeqMoves);
+        this.WatchBoard();
+        MovesCounter++;
+
+    }
+
+    public void InputClose() {
+
+        Input.close();
+
     }
 
 }

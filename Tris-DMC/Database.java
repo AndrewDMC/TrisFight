@@ -97,17 +97,6 @@ public class Database {
             if (result.first()) {
                 dbMoves = result.getString(2);
             }
-            /*
-             * if(dbMoves == ""){
-             * 
-             * result = stat.executeQuery(
-             * "SELECT * FROM esperienza WHERE mosse LIKE '"+SeqMosse+"%' AND esito = 'D'");
-             * if (result.first()) {
-             * dbMoves = result.getString(2);
-             * }
-             * 
-             * }
-             */
             System.out.println("SUS" + dbMoves);
         }
 

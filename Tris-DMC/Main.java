@@ -1,50 +1,35 @@
 
-public class Main
-{
-    public static void main(String[] args) {
+public class Main{
+    public static void main(String[] args){
 
         Tris tris=new Tris();
-        int player1=0;
-        int player2=0;
-        String mosse = "";
-        String esito = "";
         Database database = new Database();
 
+        tris.WatchBoard();
         
-
-        
-        boolean MainChecker=true;
-        tris.output();
         do{
-            tris.input(1);
-            MainChecker = tris.controllo();
+            tris.InsertMove(1);
 
-            if(!MainChecker) break;
+            if(!tris.MainControl()) break;
             
-            mosse = tris.GetMosse();
-            tris.output();
-            tris.input(2);
-            MainChecker = tris.controllo();
+            tris.WatchBoard();
+            tris.InsertMove(2);
             
-            if(!MainChecker) break;
+            
+            if(!tris.MainControl()) break;
 
-            tris.output();
+            tris.WatchBoard();
 
-        }while(MainChecker);
+        }while(tris.MainControl());
         
        
 
-        if(!MainChecker){
+        if(!tris.MainControl()){
 
-            esito = tris.GetEsito();
-            mosse = tris.GetMosse();
-            database.InsertToDB(mosse, esito);
+            tris.InputClose();
+            database.InsertToDB(tris.GetMoves(), tris.GetResult());
             database.WatchDB();
         
+        }
     }
-             
-        
-
-}
-
 }
