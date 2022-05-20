@@ -4,15 +4,15 @@ import java.util.*;
 
 public class Database {
 
-    String url = "jdbc:mysql://localhost:3306/Tris";
+     static String url = "jdbc:mysql://localhost:3306/Tris";
 
-    String username = "root";
+    static String username = "root";
 
-    String password = "";
+    static String password = "";
 
-    Connection conn = null;
-    Statement stat;
-    ResultSet result;
+    static Connection conn = null;
+    static Statement stat;
+    static ResultSet result;
 
     String esito = "";
     String mosse = "";
@@ -24,6 +24,10 @@ public class Database {
     int value = 0;
 
     public Database() {
+
+    }
+
+    public void init(){
 
         try {
 
@@ -122,6 +126,10 @@ public class Database {
 
         return value;
 
+    }
+
+    public static String GetMoves() {
+        return null;
     }
 
 }

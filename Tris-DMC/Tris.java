@@ -34,7 +34,7 @@ public class Tris {
 
             catch (Exception e){
 
-                System.out.print("Il valore corrente non è valido, reinserire:");
+                System.out.println("Il valore corrente non è valido, reinserire:");
                 flag = true;
                 Input.nextLine();
 
@@ -45,14 +45,14 @@ public class Tris {
 
             try{
 
-                value = database.InputAI(SeqMoves);
+                value = database.InputAI(this.GetMoves());
                 flag = false;
 
             }
 
             catch (Exception e){
 
-                System.out.print("Il valore corrente non è valido, reinserire:");
+                System.out.println("Il valore corrente non è valido, reinserire:" + e);
                 flag = true;
                 Input.nextLine();
 
@@ -61,7 +61,7 @@ public class Tris {
         }
 
         if (value > 0 && value < 10 && ArrMoves[value - 1] == 0 && flag != true){
-            this.InsertoSeq(playerID);
+            this.InsertSeq(playerID);
         }
 
         else{
@@ -77,7 +77,7 @@ public class Tris {
 
                         if (ArrMoves[i] == 0) {
                             value = i + 1;
-                            this.InsertoSeq(playerID);
+                            this.InsertSeq(playerID);
                             break;
                         }
 
@@ -163,7 +163,7 @@ public class Tris {
         return result;
     }
 
-    public void InsertoSeq(int playerID) {
+    public void InsertSeq(int playerID) {
 
         ArrMoves[value - 1] = playerID;
         SeqMoves = SeqMoves + Integer.toString(value);

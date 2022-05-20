@@ -5,17 +5,15 @@ public class Main{
         Tris tris=new Tris();
         Database database = new Database();
 
+        database.init();
+        
         tris.WatchBoard();
         
         do{
             tris.InsertMove(1);
-
             if(!tris.MainControl()) break;
             
-            tris.WatchBoard();
             tris.InsertMove(2);
-            
-            
             if(!tris.MainControl()) break;
 
             tris.WatchBoard();
@@ -29,7 +27,7 @@ public class Main{
             tris.InputClose();
             database.InsertToDB(tris.GetMoves(), tris.GetResult());
             database.WatchDB();
-        
+
         }
     }
 }
